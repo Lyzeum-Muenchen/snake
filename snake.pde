@@ -6,6 +6,7 @@ final int INTERVALL = 15;
 int timer = INTERVALL;
 boolean lebendig = false;
 boolean initialisiert = false;
+int punkte;
 
 void setup() {
   size(500, 500);
@@ -37,6 +38,10 @@ void draw() {
     text("Zum Starten beliebige Taste drücken", width/2, height/2);
   }
   
+  textAlign(RIGHT, TOP);
+  textSize(30);
+  text("Punkte: " + punkte, width - 10, 10);
+  
   timer --;
   if (lebendig && timer == 0) {
     timer = INTERVALL;
@@ -52,6 +57,7 @@ void keyPressed(){
 
 void punktGemacht(){
   frucht = new Frucht(width/17.0);
+  punkte ++;
 }
 
 void gameOver() {
@@ -64,6 +70,7 @@ void spielInitialisieren() {
   kopf.schritt(RIGHT, true);
   kopf.schritt(RIGHT, true);
   frucht = new Frucht(width/17.0);
+  punkte = 0;
   initialisiert = true;
 }
 
