@@ -1,8 +1,8 @@
 class Schlangenglied {
   protected float groesse;
   protected color farbe;
-  protected int i;
-  protected int j;
+  protected int i, altesI;
+  protected int j, altesJ;
   protected int richtung;
   protected Schlangenglied nachfolger;
 
@@ -10,19 +10,26 @@ class Schlangenglied {
     this.groesse = groesse;
     this.i = i;
     this.j = j;
+    altesI = i;
+    altesJ = j;
     this.richtung = richtung;
     farbe = color(79, 120, 248);
   }
 
-  public void zeichnen() {
+  // t läuft zwischen je zwei Schritten von 0 bis 1
+  public void zeichnen(float t) {
     fill(farbe);
-    rect(i*groesse, j*groesse, groesse, groesse);
+    
+    if (nachfolger != null)
+      rect(altesI*groesse, altesJ*groesse, groesse, groesse);
+      
+    rect((i*t + altesI*(1-t))*groesse, (j*t + altesJ*(1-t))*groesse, groesse, groesse);
 
     if (nachfolger != null)
-      nachfolger.zeichnen();
+      nachfolger.zeichnen(t);
   }
 
-  public void schritt(int neueRichtung, boolean gliedAnfuegen) {
+  public void schritt(int neueRichtung, boolean gliedAnfuegen) {    
     if (gliedAnfuegen && nachfolger == null) {
       nachfolger = new Schlangenglied(groesse, i, j, richtung);
       bewegen();
@@ -36,6 +43,9 @@ class Schlangenglied {
   }
 
   public void bewegen() {
+    altesI = i;
+    altesJ = j;
+    
     switch(richtung) {
     case LEFT:
       i --;

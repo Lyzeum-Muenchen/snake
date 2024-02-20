@@ -25,37 +25,41 @@ void draw() {
       kacheln[i][j].zeichnen();
     }
   }
-  kopf.zeichnen(); 
+  if (!initialisiert)
+    kopf.zeichnen(0);
+  else if (!lebendig)
+    kopf.zeichnen(1);
+  else
+    kopf.zeichnen(1.0 - timer / (float) INTERVALL);
   frucht.zeichnen();
-  
-  textAlign(CENTER,CENTER);
+
+  textAlign(CENTER, CENTER);
   textSize(25);
   fill(255);
   if (! initialisiert) {
     text("Zum Zurücksetzen beliebige Taste drücken", width/2, height/2);
-  }
-  else if(! lebendig){
+  } else if (! lebendig) {
     text("Zum Starten beliebige Taste drücken", width/2, height/2);
   }
-  
+
   textAlign(RIGHT, TOP);
   textSize(30);
   text("Punkte: " + punkte, width - 10, 10);
-  
+
   timer --;
   if (lebendig && timer == 0) {
     timer = INTERVALL;
     kopf.schritt();
   }
- }
- 
-void keyPressed(){
+}
+
+void keyPressed() {
   if (! initialisiert) spielInitialisieren();
   else if (! lebendig) spielStarten();
   else kopf.setRichtung(keyCode);
 }
 
-void punktGemacht(){
+void punktGemacht() {
   frucht = new Frucht(width/17.0);
   punkte ++;
 }
@@ -75,6 +79,8 @@ void spielInitialisieren() {
 }
 
 void spielStarten() {
-  timer = INTERVALL;
+  // setze timer = 1 damit die Schlange gleich bewegt wird
+  // und es keinen Glitch am Anfang gibt
+  timer = 1; 
   lebendig = true;
 }
